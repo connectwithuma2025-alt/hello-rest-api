@@ -4,30 +4,33 @@ pipeline {
 
     stages {
 
+        stage('Check Java') {
+            steps {
+                bat 'java -version'
+            }
+        }
+
         stage('Checkout') {
             steps {
-                echo 'Checking out source code'
-                checkout scm
+                git branch: 'main',
+                    url: 'https://github.com/connectwithuma2025-alt/hello-rest-api.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building Spring Boot application'
                 bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests'
                 bat 'mvn test'
             }
         }
 
         stage('Docker Build') {
             steps {
-                echo 'Building Docker image'
                 bat 'docker build -t hello-rest-api:latest .'
             }
         }
@@ -41,8 +44,6 @@ pipeline {
 
         stage('Docker Run') {
             steps {
-                echo 'Starting Docker container'
-
                 bat 'docker run -d --name hello-rest-api -p 8080:8080 hello-rest-api:latest'
             }
         }
@@ -50,11 +51,11 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment successful!'
+            echo 'BUILD + TEST + DOCKER DEPLOYMENT SUCCESSFUL'
         }
 
         failure {
-            echo 'Deployment failed!'
+            echo 'Pipeline failed'
         }
     }
 }
