@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/hello")
     public String hello() {
-        return "Hello from Spring Boot Docker!";
+        return "Hello from Spring Boot Jenkins!";
     }
 }
